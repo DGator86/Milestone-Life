@@ -13,6 +13,35 @@ email/password auth.
 | Next.js dev server | `npm run dev` (port 3000) |
 | Database (Neon Postgres) | Set `DATABASE_URL` in `.env.local`; apply the schema with `npm run db:push` |
 
+### Local database on Cursor Cloud (no real Neon account)
+
+There is no cloud Neon DB in this environment. Instead a **local Postgres 16**
+runs behind a tiny **Neon-HTTP-compatible proxy** so the app's
+`@neondatabase/serverless` driver works unmodified. Both persist in the VM
+snapshot; `.env.local` is already created.
+
+- **Start the stack each VM boot** (idempotent): `bash ~/neon-proxy/start-db.sh`
+  then `npm run dev`. This starts Postgres and the proxy on
+  `https://api.localtest.me:443`.
+- **Why it works:** `DATABASE_URL` host is `db.localtest.me` (→ `127.0.0.1` via
+  `/etc/hosts`); the driver rewrites the first host label to `api.` and POSTs to
+  `https://api.localtest.me/sql`, which the proxy (`~/neon-proxy/server.mjs`)
+  translates onto local Postgres. **No app code is changed.**
+- **TLS gotcha:** the proxy uses a self-signed cert. `~/.bashrc` exports
+  `NODE_EXTRA_CA_CERTS=~/neon-proxy/certs/cert.pem` so Node's `fetch` trusts it.
+  Always launch `npm run dev` from a login shell (so `.bashrc` is sourced), or
+  the app fails with `self-signed certificate` / `DEPTH_ZERO_SELF_SIGNED_CERT`.
+- **`npm run db:push` does NOT work locally:** drizzle-kit uses Neon's
+  *websocket* driver (not the HTTP proxy) and hangs. The schema is already
+  applied and persists in the snapshot. To re-apply after editing `db/schema.ts`,
+  run `npx drizzle-kit generate` then apply the new `drizzle/*.sql` with
+  `psql -h 127.0.0.1 -U milestone -d milestone -f <file>` (PGPASSWORD=milestone).
+- Local DB creds: `postgresql://milestone:milestone@127.0.0.1:5432/milestone`.
+- A brand-new user has no groups until the dashboard loads (`ensureDefaults`
+  seeds one "Business" group). The New Goal wizard opens in AI mode; without
+  `GEMINI_API_KEY` click "Create manually instead" and fill at least one
+  milestone step, or "Create Goal" silently no-ops.
+
 ### Commands
 
 - **Lint**: `npm run lint`
