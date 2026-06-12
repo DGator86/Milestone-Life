@@ -1,4 +1,5 @@
 import TopNav from "./TopNav";
+import MobileNav from "./MobileNav";
 import FloatingAssistant from "@/components/ai/FloatingAssistant";
 import { ToastProvider } from "@/lib/toast-context";
 import { getSettings } from "@/lib/settings";
@@ -26,7 +27,8 @@ export default async function AppShell({
         style={{ ["--brand" as string]: settings.brandColor }}
       >
         <TopNav user={user} terms={settings.terms} companyName={settings.companyName} brandColor={settings.brandColor} isAdmin={isAdmin} />
-        <main className="flex-1 min-w-0 min-h-0">{children}</main>
+        <main className="flex-1 min-w-0 min-h-0 pb-16 md:pb-0">{children}</main>
+        <MobileNav />
         <FloatingAssistant />
       </div>
     </ToastProvider>

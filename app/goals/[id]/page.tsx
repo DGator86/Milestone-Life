@@ -112,7 +112,7 @@ export default async function GoalDetailPage({
 
   return (
     <AppShell user={user}>
-      <div className="p-4 sm:p-6 max-w-3xl">
+      <div className="ms-mobile-page max-w-3xl">
         <Link
           href="/goals"
           className="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-white/30 hover:text-gray-600 dark:hover:text-white/60 mb-5 transition-colors"

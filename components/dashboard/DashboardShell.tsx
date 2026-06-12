@@ -57,8 +57,16 @@ export default function DashboardShell({
   const [prefill, setPrefill] = useState<GoalPrefill | null>(null);
 
   const tabParam = searchParams.get("tab");
+  const groupParam = searchParams.get("group") ?? "";
   const view: ViewTab =
     tabParam === "agenda" || tabParam === "calendar" || tabParam === "focus" ? tabParam : "focus";
+  const selectedGroupId = groups.some((group) => group.id === groupParam) ? groupParam : "";
+  const filteredGoals = selectedGroupId
+    ? goals.filter((goal) => goal.group_id === selectedGroupId)
+    : goals;
+  const groupChips = [{ id: "", name: "All", color: "#1769FF" }, ...groups];
+  const activeGroupName =
+    groupChips.find((group) => group.id === selectedGroupId)?.name ?? "All";
 
   const mobileDate = useMemo(() => formatMobileDate(), []);
 
@@ -67,6 +75,17 @@ export default function DashboardShell({
       const params = new URLSearchParams(searchParams.toString());
       if (next === "focus") params.delete("tab");
       else params.set("tab", next);
+      const qs = params.toString();
+      router.replace(qs ? `/dashboard?${qs}` : "/dashboard", { scroll: false });
+    },
+    [router, searchParams],
+  );
+
+  const setGroup = useCallback(
+    (groupId: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (groupId) params.set("group", groupId);
+      else params.delete("group");
       const qs = params.toString();
       router.replace(qs ? `/dashboard?${qs}` : "/dashboard", { scroll: false });
     },
@@ -113,6 +132,9 @@ export default function DashboardShell({
           <h1 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight mt-0.5">
             {view === "focus" ? "Today" : view === "agenda" ? "Agenda" : "Calendar"}
           </h1>
+          <p className="text-xs text-gray-500 dark:text-white/40 mt-0.5">
+            {activeGroupName === "All" ? "Milestones across life" : `${activeGroupName} milestones`}
+          </p>
         </div>
 
         {/* Sticky tab bar — app-style on mobile */}
@@ -134,24 +156,47 @@ export default function DashboardShell({
           </div>
         </div>
 
+        <div className="-mx-4 px-4 overflow-x-auto no-scrollbar md:mx-0 md:px-0">
+          <div className="flex gap-2 min-w-max pb-1">
+            {groupChips.map((group) => {
+              const active = selectedGroupId === group.id;
+              return (
+                <button
+                  key={group.id}
+                  type="button"
+                  onClick={() => setGroup(group.id)}
+                  className={`min-h-[40px] rounded-full px-4 text-sm font-semibold transition-all touch-manipulation ${
+                    active
+                      ? "text-white shadow-sm"
+                      : "bg-white dark:bg-[#0B1929] text-gray-500 dark:text-white/55 border border-milestone-line dark:border-white/[0.08] active:bg-gray-50 dark:active:bg-white/[0.05]"
+                  }`}
+                  style={active ? { backgroundColor: group.color ?? "#1769FF" } : undefined}
+                >
+                  {group.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {view === "focus" && (
           <div className="space-y-4 md:space-y-4">
-            <FocusToday goals={goals} onNewGoal={openWizard} />
+            <FocusToday goals={filteredGoals} onNewGoal={openWizard} />
             <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6">
               {/* Mobile: kill list before goal cards — actions first */}
               <div className="order-1 lg:order-2 lg:col-span-1">
-                <KillList goals={goals} tasks={tasks} customers={customers} />
+                <KillList goals={filteredGoals} tasks={tasks} customers={customers} />
               </div>
               <div className="order-2 lg:order-1 lg:col-span-2">
-                <CriticalPaths goals={goals} onNewGoal={openWizard} />
+                <CriticalPaths goals={filteredGoals} onNewGoal={openWizard} />
               </div>
             </div>
           </div>
         )}
 
-        {view === "agenda" && <AgendaView goals={goals} tasks={tasks} />}
+        {view === "agenda" && <AgendaView goals={filteredGoals} tasks={tasks} />}
 
-        {view === "calendar" && <CalendarView goals={goals} tasks={tasks} />}
+        {view === "calendar" && <CalendarView goals={filteredGoals} tasks={tasks} />}
       </div>
     </>
   );

@@ -203,7 +203,7 @@ export default async function TimelinePage() {
 
   return (
     <AppShell user={user}>
-      <div className="p-6 max-w-3xl">
+      <div className="ms-mobile-page max-w-3xl">
         <div className="mb-6">
           <h1 className="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2">
             <Clock size={20} className="text-milestone-blue" />

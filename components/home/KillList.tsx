@@ -339,9 +339,9 @@ export default function KillList({ tasks, customers, goals }: Props) {
     <section className="ms-card-app overflow-hidden flex flex-col" style={{ opacity: isPending ? 0.7 : 1 }}>
       <div className="flex items-start justify-between px-4 pt-4 pb-3 border-b border-milestone-line dark:border-white/[0.06]">
         <div>
-          <h2 className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">Kill list</h2>
+          <h2 className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">Next steps</h2>
           <p className="text-xs text-gray-500 dark:text-white/40 mt-0.5">
-            {openCount + milestoneCount} open actions
+            {openCount + milestoneCount} open next steps
           </p>
         </div>
         <button
@@ -349,7 +349,7 @@ export default function KillList({ tasks, customers, goals }: Props) {
           className="ms-btn-ghost text-milestone-blue hover:bg-milestone-blue-dim min-h-[44px] min-w-[44px] justify-center touch-manipulation"
         >
           {showForm ? <X size={15} /> : <Plus size={15} />}
-          {showForm ? "Cancel" : "Add"}
+          {showForm ? "Cancel" : "Add task"}
         </button>
       </div>
 
@@ -387,7 +387,7 @@ export default function KillList({ tasks, customers, goals }: Props) {
             disabled={isPending}
             className="w-full bg-milestone-blue text-white py-2 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50"
           >
-            Add to Kill List
+            Add next step
           </button>
         </form>
       )}
@@ -396,7 +396,7 @@ export default function KillList({ tasks, customers, goals }: Props) {
         {milestoneCount > 0 && (
           <div>
             <div className="flex items-center gap-2 px-4 pt-3 pb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wide text-gray-400">Goal milestones</span>
+              <span className="text-[11px] font-bold uppercase tracking-wide text-gray-400">Milestones</span>
             </div>
             {MILESTONE_BUCKET_ORDER.map((bucket) => (
               <MilestoneGroup
@@ -422,7 +422,7 @@ export default function KillList({ tasks, customers, goals }: Props) {
         ) : openCount > 0 ? (
           <>
             <div className="flex items-center gap-2 px-4 pt-3 pb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wide text-gray-400">CRM tasks</span>
+              <span className="text-[11px] font-bold uppercase tracking-wide text-gray-400">Other tasks</span>
             </div>
             <TaskGroup label="Overdue" tone="bg-milestone-red-dim text-milestone-red" tasks={groups.overdue} onToggle={handleToggle} onDelete={handleDelete} />
             <TaskGroup label="Today" tone="bg-milestone-blue-dim text-milestone-blue" tasks={groups.today} onToggle={handleToggle} onDelete={handleDelete} />

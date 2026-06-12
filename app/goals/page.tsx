@@ -43,7 +43,7 @@ export default async function GoalsPage() {
 
   return (
     <AppShell user={user}>
-      <div className="ms-page max-w-4xl">
+      <div className="ms-mobile-page max-w-4xl">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="ms-page-title">

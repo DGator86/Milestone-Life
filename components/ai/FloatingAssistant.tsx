@@ -28,13 +28,7 @@ export default function FloatingAssistant() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open AI assistant"
-          className="fixed z-50 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-milestone-blue text-white shadow-card-xl active:scale-95 transition-transform touch-manipulation"
-          style={{
-            width: 56,
-            height: 56,
-            right: "max(1rem, env(safe-area-inset-right))",
-            bottom: "max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem))",
-          }}
+          className="fixed z-50 right-4 bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] lg:right-5 lg:bottom-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-milestone-blue text-white shadow-card-xl active:scale-95 transition-transform touch-manipulation"
         >
           <Sparkles size={22} />
         </button>

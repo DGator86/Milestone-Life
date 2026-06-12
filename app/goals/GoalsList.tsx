@@ -257,11 +257,11 @@ function GoalRow({
 
   return (
     <div className={`border-b border-milestone-line last:border-0 ${isPending ? "opacity-50" : ""}`}>
-      <div className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50/60 dark:hover:bg-white/[0.03] transition-colors">
+      <div className="flex items-start sm:items-center gap-3 px-4 sm:px-5 py-4 sm:py-3.5 hover:bg-gray-50/60 dark:hover:bg-white/[0.03] transition-colors">
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="shrink-0 p-0.5 rounded text-gray-300 dark:text-white/30 hover:text-milestone-blue dark:hover:text-milestone-blue transition-colors"
+          className="ms-touch-icon -ml-2 -mt-2 sm:m-0 sm:min-h-0 sm:min-w-0 sm:p-0.5 shrink-0 rounded text-gray-300 dark:text-white/30 hover:text-milestone-blue dark:hover:text-milestone-blue transition-colors"
           aria-label={expanded ? "Collapse goal preview" : "Expand goal preview"}
           aria-expanded={expanded}
         >
@@ -303,10 +303,19 @@ function GoalRow({
               {goal.importance}
             </span>
           </div>
+          <p className="mt-2 text-xs text-gray-500 dark:text-white/50 sm:hidden">
+            {next ? (
+              <>
+                Next: <span className="font-semibold text-gray-800 dark:text-white">{next.title}</span>
+              </>
+            ) : (
+              "All milestones complete"
+            )}
+          </p>
         </div>
 
         {/* Progress bar */}
-        <div className="shrink-0 flex items-center gap-2 min-w-[88px]">
+        <div className="hidden sm:flex shrink-0 items-center gap-2 min-w-[88px]">
           <div className="w-14 h-1.5 bg-gray-100 rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all"
@@ -334,7 +343,7 @@ function GoalRow({
               onClick={handleReactivate}
               title="Reactivate"
               aria-label="Reactivate goal"
-              className="p-1.5 rounded-lg text-gray-300 dark:text-white/35 hover:text-milestone-green hover:bg-milestone-green-dim transition-colors"
+                className="ms-touch-icon sm:min-h-0 sm:min-w-0 sm:p-1.5 rounded-lg text-gray-300 dark:text-white/35 hover:text-milestone-green hover:bg-milestone-green-dim transition-colors"
             >
               <RotateCcw size={14} />
             </button>
@@ -345,7 +354,7 @@ function GoalRow({
                 onClick={() => setEditing((e) => !e)}
                 title="Edit"
                 aria-label="Edit goal"
-                className={`p-1.5 rounded-lg transition-colors ${
+                className={`ms-touch-icon sm:min-h-0 sm:min-w-0 sm:p-1.5 rounded-lg transition-colors ${
                   editing
                     ? "text-milestone-blue bg-milestone-blue-dim"
                     : "text-gray-300 dark:text-white/35 hover:text-milestone-blue hover:bg-milestone-blue-dim"
@@ -359,7 +368,7 @@ function GoalRow({
                   onClick={handleArchive}
                   title="Archive"
                   aria-label="Archive goal"
-                  className="p-1.5 rounded-lg text-gray-300 dark:text-white/35 hover:text-milestone-amber hover:bg-milestone-amber-dim transition-colors"
+                  className="ms-touch-icon sm:min-h-0 sm:min-w-0 sm:p-1.5 rounded-lg text-gray-300 dark:text-white/35 hover:text-milestone-amber hover:bg-milestone-amber-dim transition-colors"
                 >
                   <Archive size={14} />
                 </button>
@@ -371,7 +380,7 @@ function GoalRow({
             onClick={handleDelete}
             title="Delete goal"
             aria-label="Delete goal"
-            className="p-1.5 rounded-lg text-gray-300 dark:text-white/35 hover:text-milestone-red hover:bg-milestone-red-dim transition-colors"
+            className="ms-touch-icon sm:min-h-0 sm:min-w-0 sm:p-1.5 rounded-lg text-gray-300 dark:text-white/35 hover:text-milestone-red hover:bg-milestone-red-dim transition-colors"
           >
             <Trash2 size={14} />
           </button>

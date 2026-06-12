@@ -35,14 +35,19 @@ export default function TopNav({
   brandColor?: string;
   isAdmin?: boolean;
 }) {
-  const NAV_ITEMS = [
-    { label: "Home", href: "/dashboard" },
+  const LIFE_NAV_ITEMS = [
+    { label: "Today", href: "/dashboard" },
+    { label: terms.goals, href: "/goals" },
+    { label: "Timeline", href: "/timeline" },
+    { label: "Areas", href: "/groups" },
+  ];
+  const WORK_NAV_ITEMS = [
     { label: terms.customers, href: "/customers" },
     { label: terms.contacts, href: "/contacts" },
     { label: terms.opportunities, href: "/opportunities" },
-    { label: terms.goals, href: "/goals" },
     { label: "Reports", href: "/reports" },
   ];
+  const NAV_ITEMS = [...LIFE_NAV_ITEMS, ...WORK_NAV_ITEMS];
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -88,8 +93,8 @@ export default function TopNav({
               {(companyName ?? "Milestone").charAt(0).toUpperCase()}
             </span>
           </div>
-          <span className="font-semibold text-[15px] text-gray-900 dark:text-white tracking-tight hidden sm:block truncate max-w-[200px]">
-            {companyName ?? "Milestone CRM"}
+          <span className="font-semibold text-[15px] text-gray-900 dark:text-white tracking-tight truncate max-w-[130px] sm:max-w-[200px]">
+            {companyName ?? "Milestone"}
           </span>
         </Link>
 
@@ -228,7 +233,29 @@ export default function TopNav({
       {/* Mobile nav drawer */}
       {mobileOpen && (
         <nav className="md:hidden border-t border-milestone-line dark:border-white/[0.06] px-2 py-1.5 space-y-0.5 bg-white dark:bg-[#0B1929]">
-          {NAV_ITEMS.map((item) => {
+          <p className="px-2.5 pt-1 pb-0.5 text-[10px] font-bold uppercase tracking-widest text-gray-300 dark:text-white/25">
+            Organize life
+          </p>
+          {LIFE_NAV_ITEMS.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`block px-2.5 py-2 text-sm font-medium rounded-md transition-colors ${
+                  active
+                    ? "bg-milestone-blue-dim dark:bg-milestone-blue/15 text-milestone-blue"
+                    : "text-gray-600 dark:text-white/60 hover:bg-gray-50 dark:hover:bg-white/[0.04]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+          <p className="px-2.5 pt-3 pb-0.5 text-[10px] font-bold uppercase tracking-widest text-gray-300 dark:text-white/25">
+            Work CRM
+          </p>
+          {WORK_NAV_ITEMS.map((item) => {
             const active = isActive(item.href);
             return (
               <Link

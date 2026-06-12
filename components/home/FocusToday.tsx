@@ -37,12 +37,12 @@ export default function FocusToday({ goals, onNewGoal }: Props) {
   if (items.length === 0) {
     return (
       <section className="ms-card-app px-5 py-10 text-center">
-        <p className="text-gray-400 dark:text-white/40 text-sm mb-4">No active goals yet.</p>
+        <p className="text-gray-400 dark:text-white/40 text-sm mb-4">No active milestones here yet.</p>
         <button
           onClick={onNewGoal}
           className="ms-btn-primary w-full sm:w-auto justify-center min-h-[44px] px-5"
         >
-          Create your first goal <ArrowRight size={13} />
+          Create a life goal <ArrowRight size={13} />
         </button>
       </section>
     );
@@ -56,7 +56,7 @@ export default function FocusToday({ goals, onNewGoal }: Props) {
       {/* ── Hero: #1 ranked action ── */}
       <div className="px-4 py-5 sm:py-4 border-b border-milestone-line dark:border-white/[0.06] bg-gradient-to-r from-milestone-navy to-[#0d2040]">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-2">
-          Up next
+          Next milestone
         </p>
         <p className="text-xs text-white/50 mb-1.5 truncate">
           {first.goal.title}

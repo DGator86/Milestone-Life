@@ -54,12 +54,12 @@ export default async function Home() {
       </header>
 
       {/* ── Hero ── */}
-      <section className="max-w-6xl mx-auto px-6 pt-28 pb-20 text-center">
-        <h1 className="text-5xl sm:text-6xl md:text-[68px] font-black tracking-tight leading-[1.05] mb-6 text-gray-900">
-          Know what to do next.
+      <section className="max-w-6xl mx-auto px-6 pt-20 sm:pt-28 pb-20 text-center">
+        <h1 className="text-4xl sm:text-6xl md:text-[68px] font-black tracking-tight leading-[1.05] mb-6 text-gray-900">
+          Organize life by milestones.
         </h1>
         <p className="text-xl text-gray-500 max-w-xl mx-auto mb-10 leading-relaxed">
-          Milestone turns goals into a ranked queue of next actions, so work never stalls.
+          Milestone turns life goals into one clear next step, made for your phone.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-20">
@@ -78,51 +78,54 @@ export default async function Home() {
           </Link>
         </div>
 
-        {/* App preview mockup — light theme */}
-        <div className="mx-auto max-w-4xl">
-          <div className="rounded-2xl border border-milestone-line bg-[#EEF2F7] shadow-card-xl overflow-hidden">
-            {/* Window chrome */}
-            <div className="flex items-center gap-1.5 px-4 py-3 border-b border-milestone-line bg-white">
-              <div className="w-3 h-3 rounded-full bg-gray-200" />
-              <div className="w-3 h-3 rounded-full bg-gray-200" />
-              <div className="w-3 h-3 rounded-full bg-gray-200" />
-              <div className="flex-1 mx-4">
-                <div className="bg-milestone-line/60 rounded-md h-5 max-w-[180px] mx-auto" />
+        {/* App preview mockup — phone-first Today screen */}
+        <div className="mx-auto max-w-[360px]">
+          <div className="rounded-[2.25rem] border-[10px] border-gray-900 bg-[#EEF2F7] shadow-card-xl overflow-hidden text-left">
+            <div className="h-7 bg-gray-900" />
+            <div className="p-4 space-y-3">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Today</p>
+                <h2 className="text-xl font-black tracking-tight text-gray-900">Next milestone</h2>
               </div>
-            </div>
-            {/* App layout */}
-            <div className="flex" style={{ height: "280px" }}>
-              {/* Sidebar */}
-              <div className="w-[52px] bg-white border-r border-milestone-line flex flex-col items-center py-4 gap-3 shrink-0">
-                <div className="w-8 h-8 rounded-lg bg-milestone-blue flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-sm bg-white/60" />
-                </div>
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <div key={i} className={`w-5 h-5 rounded-md ${i === 0 ? "bg-milestone-line" : "bg-gray-100"}`} />
+              <div className="rounded-2xl bg-milestone-navy p-4 text-white">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-2">
+                  Health
+                </p>
+                <p className="text-lg font-bold leading-snug mb-4">
+                  Walk 20 minutes after lunch
+                </p>
+                <button className="w-full rounded-xl bg-white py-3 text-sm font-bold text-gray-900">
+                  Mark done
+                </button>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {["All", "Work", "Home", "Health"].map((label, i) => (
+                  <div
+                    key={label}
+                    className={`rounded-full py-2 text-center text-xs font-bold ${
+                      i === 0 ? "bg-milestone-blue text-white" : "bg-white text-gray-400"
+                    }`}
+                  >
+                    {label}
+                  </div>
                 ))}
               </div>
-              {/* Content */}
-              <div className="flex-1 p-5 overflow-hidden bg-[#EEF2F7]">
-                {/* Focus block */}
-                <div className="bg-white rounded-xl border border-milestone-line p-4 mb-3">
-                  <div className="h-2.5 w-20 bg-gray-200 rounded mb-3" />
-                  {[
-                    { title: "Send proposal to Acme", goal: "Close Q2 deal", pct: 67, color: "#1769FF" },
-                    { title: "Write architecture doc", goal: "Launch v2 API", pct: 40, color: "#36A852" },
-                    { title: "Finalize onboarding flow", goal: "Reduce churn", pct: 20, color: "#1769FF" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 py-2.5 border-b border-milestone-line/50 last:border-0">
-                      <div className="flex-1 min-w-0">
-                        <div className="h-2 w-24 bg-gray-100 rounded mb-1" />
-                        <div className="h-3 w-36 rounded" style={{ backgroundColor: `${item.color}18` }} />
-                      </div>
-                      <div
-                        className="w-5 h-5 rounded-full border-2 shrink-0"
-                        style={{ borderColor: item.color }}
-                      />
+              <div className="rounded-2xl border border-milestone-line bg-white overflow-hidden">
+                {["Book the dentist", "Draft budget plan", "Review launch notes"].map((title, i) => (
+                  <div key={title} className="flex items-center gap-3 px-4 py-3 border-b border-milestone-line last:border-0">
+                    <div className={`h-5 w-5 rounded-full border-2 ${i === 0 ? "border-milestone-blue" : "border-gray-200"}`} />
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{title}</p>
+                      <p className="text-xs text-gray-400">{i === 0 ? "Home" : i === 1 ? "Money" : "Work"}</p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-4 gap-1 rounded-2xl bg-white px-2 py-2 text-center text-[10px] font-bold text-gray-400">
+                <span className="text-milestone-blue">Today</span>
+                <span>Goals</span>
+                <span>Timeline</span>
+                <span>Areas</span>
               </div>
             </div>
           </div>
@@ -169,9 +172,9 @@ export default async function Home() {
               },
               {
                 icon: Shield,
-                title: "Kill List",
+                title: "Next Steps",
                 description:
-                  "Cut goals that don't deserve your time. Focus is a feature. Ruthless prioritization, built in.",
+                  "Keep the phone screen focused on what matters now: the next milestone for each active goal.",
               },
               {
                 icon: CheckCircle,
@@ -266,7 +269,7 @@ export default async function Home() {
             </div>
             <span className="text-sm font-semibold text-gray-400">Milestone</span>
           </div>
-          <p className="text-xs text-gray-400">Track the path. Kill the next step.</p>
+          <p className="text-xs text-gray-400">Track the path. Finish the next step.</p>
         </div>
       </footer>
     </div>

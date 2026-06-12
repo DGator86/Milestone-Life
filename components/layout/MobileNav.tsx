@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Target, Workflow, LayoutTemplate } from "lucide-react";
+import { Clock, LayoutDashboard, Layers, Target } from "lucide-react";
 
 const items = [
-  { label: "Home", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Today", href: "/dashboard", icon: LayoutDashboard },
   { label: "Goals", href: "/goals", icon: Target },
-  { label: "Flows", href: "/flows", icon: Workflow },
-  { label: "Templates", href: "/templates", icon: LayoutTemplate },
+  { label: "Timeline", href: "/timeline", icon: Clock },
+  { label: "Areas", href: "/groups", icon: Layers },
 ];
 
 export default function MobileNav() {
@@ -16,7 +16,7 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-milestone-line dark:border-white/[0.07] bg-white/95 dark:bg-[#0B1929]/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
+      className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-milestone-line dark:border-white/[0.07] bg-white/95 dark:bg-[#0B1929]/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
       aria-label="Main navigation"
     >
       <ul className="flex items-stretch justify-around h-14">
