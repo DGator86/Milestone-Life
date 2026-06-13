@@ -1,0 +1,64 @@
+# Build Milestone Life iOS from GitHub without a local Mac.
+# Setup: https://codemagic.io → connect DGator86/Milestone-Life
+# Add Apple Developer integration + App Store Connect API key in Codemagic UI.
+#
+# Required Codemagic env vars (team or workflow):
+#   CAPACITOR_SERVER_URL = https://milestone-red.vercel.app
+#   APP_STORE_APPLE_ID   = your App Store Connect app Apple ID (numeric)
+#   BUNDLE_ID            = com.dgator86.milestonelife
+
+workflows:
+  milestone-life-ios:
+    name: Milestone Life iOS
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      vars:
+        CAPACITOR_SERVER_URL: https://milestone-red.vercel.app
+        BUNDLE_ID: com.dgator86.milestonelife
+        XCODE_WORKSPACE: App.xcworkspace
+        XCODE_SCHEME: App
+      node: 20
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: Main-Branch
+          include: true
+    scripts:
+      - name: Install web dependencies
+        script: npm ci
+      - name: Install Capacitor shell
+        script: |
+          cd mobile
+          npm ci
+      - name: Add iOS platform and sync
+        script: |
+          cd mobile
+          npx cap add ios
+          CAPACITOR_SERVER_URL="$CAPACITOR_SERVER_URL" npx cap sync ios
+      - name: Install CocoaPods
+        script: |
+          cd mobile/ios/App
+          pod install
+      - name: Set iOS build number
+        script: |
+          cd mobile/ios/App
+          agvtool new-version -all "$BUILD_NUMBER"
+      - name: Build ipa for App Store
+        script: |
+          cd mobile/ios/App
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - mobile/ios/App/build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false

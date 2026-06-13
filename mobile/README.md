@@ -5,9 +5,11 @@ Thin native wrappers that load your **production** Milestone web app in a WebVie
 ## Prerequisites
 
 - Node.js 20+
-- **iOS:** macOS, Xcode, Apple Developer account
-- **Android:** Android Studio, Google Play Console account
-- Production URL deployed with HTTPS (set in `capacitor.config.ts` or env)
+- **iOS:** macOS + Xcode, **or** [Codemagic](../codemagic.yaml) (build from Windows via cloud Mac)
+- **Android:** Android Studio (works on Windows)
+- Production URL: **https://milestone-red.vercel.app** (override with `CAPACITOR_SERVER_URL`)
+
+See **[docs/WINDOWS-APP-STORE.md](../docs/WINDOWS-APP-STORE.md)** for the full Windows PC walkthrough.
 
 ## Setup
 
@@ -15,8 +17,9 @@ Thin native wrappers that load your **production** Milestone web app in a WebVie
 cd mobile
 npm install
 
-# Point at your live site (required before sync)
-export CAPACITOR_SERVER_URL=https://your-domain.com
+# Defaults to https://milestone-red.vercel.app; override for previews:
+export CAPACITOR_SERVER_URL=https://your-preview.vercel.app   # bash
+# $env:CAPACITOR_SERVER_URL="https://your-preview.vercel.app"  # PowerShell
 ```
 
 ### First-time native projects

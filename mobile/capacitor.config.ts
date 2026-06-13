@@ -5,7 +5,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
  * Override locally: CAPACITOR_SERVER_URL=https://your-preview.vercel.app npx cap sync
  */
 const serverUrl =
-  process.env.CAPACITOR_SERVER_URL?.trim() || "https://your-production-domain.com";
+  process.env.CAPACITOR_SERVER_URL?.trim() || "https://milestone-red.vercel.app";
 
 const config: CapacitorConfig = {
   appId: "com.dgator86.milestonelife",

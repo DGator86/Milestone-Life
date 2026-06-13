@@ -12,10 +12,10 @@ export const metadata: Metadata = {
     icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
     apple: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
   },
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "Milestone" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Milestone Life" },
   openGraph: {
     type: "website",
-    siteName: "Milestone",
+    siteName: "Milestone Life",
     title: "Milestone – Track the path. Kill the next step.",
     description: "A no-bullshit goal CRM that turns vague goals into concrete milestones.",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Milestone" }],

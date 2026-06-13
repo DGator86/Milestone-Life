@@ -94,8 +94,10 @@ Only **after** local setup works:
 ## App Store & Google Play launch
 
 See **[docs/LAUNCH.md](docs/LAUNCH.md)** for the full checklist (web + Capacitor
-hybrid apps). Native shells live in **`mobile/`** — they load your production
-Vercel URL.
+hybrid apps). **On Windows?** Start with **[docs/WINDOWS-APP-STORE.md](docs/WINDOWS-APP-STORE.md)**.
+
+Native shells live in **`mobile/`** — they load your production Vercel URL
+(https://milestone-red.vercel.app). iOS builds without a Mac: use **`codemagic.yaml`**.
 
 ## Project Structure
 
