@@ -8,8 +8,8 @@ const serverUrl =
   process.env.CAPACITOR_SERVER_URL?.trim() || "https://your-production-domain.com";
 
 const config: CapacitorConfig = {
-  appId: "com.milestone.app",
-  appName: "Milestone",
+  appId: "com.dgator86.milestonelife",
+  appName: "Milestone Life",
   webDir: "www",
   server: {
     url: serverUrl,

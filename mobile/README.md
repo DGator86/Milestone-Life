@@ -27,7 +27,7 @@ npx cap add android
 npx cap sync
 ```
 
-Edit bundle identifier in Xcode / `android/app/build.gradle` if `com.milestone.app` is taken.
+Bundle identifier is `com.dgator86.milestonelife` (set in `capacitor.config.ts`). Change it only before your first store upload — Apple treats it as permanent.
 
 ## Develop & test
 

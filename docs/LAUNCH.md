@@ -75,7 +75,7 @@ From `mobile/README.md`:
 1. Set `CAPACITOR_SERVER_URL` to production HTTPS URL
 2. `npm install` in `mobile/`
 3. `npx cap add ios` / `npx cap add android` (on Mac for iOS)
-4. Open Xcode / Android Studio, set bundle ID `com.yourcompany.milestone`
+4. Open Xcode / Android Studio; bundle ID is `com.dgator86.milestonelife` (from `capacitor.config.ts`)
 5. Test login + dashboard on simulator and physical device
 
 ### Day 10–11: Store listings
