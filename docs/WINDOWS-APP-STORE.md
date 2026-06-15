@@ -91,17 +91,34 @@ Apple does not allow building iOS on Windows locally. Use **Codemagic** with `co
 
 ### Setup (browser, one time)
 
-1. https://codemagic.io → Sign up with GitHub → Add **DGator86/Milestone-Life**
-2. **Team settings → Team integrations → Developer Portal → Add key**
-   - **API key name:** pick any label you will remember (e.g. `Milestone Life ASC`) — this is **not** auto-named `codemagic`
-   - **Issuer ID**, **Key ID**, upload the `.p8` file from App Store Connect → Users and Access → Integrations → App Store Connect API
-3. **codemagic.yaml settings → Code signing identities**
-   - **iOS certificates:** Fetch or generate an **Apple Distribution** certificate (uses the API key above)
-   - **iOS provisioning profiles:** Fetch an **App Store** profile for `com.dgator86.milestonelife`
-4. Start workflow **Milestone Life iOS** — first run produces a downloadable `.ipa` artifact
-5. **Optional TestFlight auto-upload:** edit `codemagic.yaml`, uncomment `integrations` and `publishing.app_store_connect`, and set `YOUR_APP_STORE_CONNECT_KEY_NAME` to the exact name from step 2
+**Prerequisites:** Apple Developer Program ($99/year) enrolled.
 
-**Common error:** `App Store Connect integration "codemagic" does not exist` — the integration name in yaml must match the name you chose in Codemagic Team settings, not the word `codemagic`.
+1. **Create App Store Connect API key** (if you have not yet)
+   - https://appstoreconnect.apple.com → **Users and Access** → **Integrations** → **App Store Connect API**
+   - Click **+** → name: `Milestone Life ASC` → role: **App Manager** → **Generate**
+   - Download the `.p8` file immediately (only shown once)
+   - Note the **Issuer ID** (top of page) and **Key ID**
+
+2. **Add key to Codemagic**
+   - https://codemagic.io → **Team settings** → **Team integrations** → **Developer Portal** → **Add key**
+   - **API key name:** `Milestone Life ASC` (must match `codemagic.yaml` exactly)
+   - Paste Issuer ID, Key ID, upload `.p8` file → **Save**
+
+3. **Add app in Codemagic**
+   - Applications → **DGator86/Milestone-Life** → workflow **Milestone Life iOS**
+
+4. **Start build** — signing files are created automatically (`fetch-signing-files --create`).
+   You do **not** need to upload certificates or profiles manually.
+
+**If API key name differs:** edit `integrations.app_store_connect` in `codemagic.yaml` to your exact name.
+
+**Common errors:**
+
+| Error | Fix |
+|-------|-----|
+| `integration "codemagic" does not exist` | Use your real key name, not `codemagic` |
+| `No matching profiles found for bundle identifier` | Pull latest `Main-Branch` (auto-create signing is in yaml now) |
+| `App Store Connect integration ... does not exist` | Add API key in Codemagic with name `Milestone Life ASC` |
 
 ### App Store Connect (browser)
 

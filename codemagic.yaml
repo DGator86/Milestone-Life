@@ -1,39 +1,31 @@
 # Milestone Life — iOS build on Codemagic (no local Mac required)
 #
-# BEFORE FIRST BUILD — Codemagic Team settings:
+# REQUIRED in Codemagic Team settings:
 # 1. Team integrations → Developer Portal → Add key
-#    - Name it anything (e.g. "Milestone Life ASC") — NOT "codemagic"
-#    - Upload App Store Connect API .p8 key + Issuer ID + Key ID
-# 2. codemagic.yaml settings → Code signing identities
-#    - Fetch or generate App Store distribution certificate
-#    - Fetch App Store provisioning profile for com.dgator86.milestonelife
+#    - Name it exactly: Milestone Life ASC
+#    - Issuer ID, Key ID, and .p8 file from App Store Connect
+# 2. Apple Developer Program enrolled ($99/year)
 #
-# AFTER IPA BUILDS — enable TestFlight upload:
-# - Uncomment `integrations` + `publishing` below
-# - Replace YOUR_APP_STORE_CONNECT_KEY_NAME with the exact name from step 1
+# This workflow CREATES the bundle ID, certificate, and App Store profile
+# automatically — you do not need to upload profiles manually.
 
 workflows:
   milestone-life-ios:
     name: Milestone Life iOS
     max_build_duration: 60
     instance_type: mac_mini_m2
+    integrations:
+      # Must match the API key name in Codemagic Team integrations exactly.
+      app_store_connect: Milestone Life ASC
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.dgator86.milestonelife
       vars:
         CAPACITOR_SERVER_URL: https://milestone-red.vercel.app
         BUNDLE_ID: com.dgator86.milestonelife
         XCODE_WORKSPACE: App.xcworkspace
         XCODE_SCHEME: App
-        # Set in Codemagic UI when enabling TestFlight auto-upload:
-        # APP_STORE_APPLE_ID: "1234567890"
       node: 20
       xcode: latest
       cocoapods: default
-    # Uncomment after adding Apple Developer Portal key in Codemagic UI:
-    # integrations:
-    #   app_store_connect: YOUR_APP_STORE_CONNECT_KEY_NAME
     triggering:
       events:
         - push
@@ -56,6 +48,15 @@ workflows:
         script: |
           cd mobile/ios/App
           pod install
+      - name: Set up keychain
+        script: keychain initialize
+      - name: Fetch or create signing files
+        script: |
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create
+      - name: Add certificates to keychain
+        script: keychain add-certificates
       - name: Set up code signing
         script: xcode-project use-profiles --project mobile/ios/App/App.xcodeproj
       - name: Set iOS build number
@@ -78,7 +79,7 @@ workflows:
         notify:
           success: true
           failure: true
-      # Uncomment after integrations block is configured with your real key name:
+      # Uncomment after first successful IPA build:
       # app_store_connect:
       #   auth: integration
       #   submit_to_testflight: true
