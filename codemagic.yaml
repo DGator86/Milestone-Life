@@ -1,28 +1,39 @@
-# Build Milestone Life iOS from GitHub without a local Mac.
-# Setup: https://codemagic.io → connect DGator86/Milestone-Life
-# Add Apple Developer integration + App Store Connect API key in Codemagic UI.
+# Milestone Life — iOS build on Codemagic (no local Mac required)
 #
-# Required Codemagic env vars (team or workflow):
-#   CAPACITOR_SERVER_URL = https://milestone-red.vercel.app
-#   APP_STORE_APPLE_ID   = your App Store Connect app Apple ID (numeric)
-#   BUNDLE_ID            = com.dgator86.milestonelife
+# BEFORE FIRST BUILD — Codemagic Team settings:
+# 1. Team integrations → Developer Portal → Add key
+#    - Name it anything (e.g. "Milestone Life ASC") — NOT "codemagic"
+#    - Upload App Store Connect API .p8 key + Issuer ID + Key ID
+# 2. codemagic.yaml settings → Code signing identities
+#    - Fetch or generate App Store distribution certificate
+#    - Fetch App Store provisioning profile for com.dgator86.milestonelife
+#
+# AFTER IPA BUILDS — enable TestFlight upload:
+# - Uncomment `integrations` + `publishing` below
+# - Replace YOUR_APP_STORE_CONNECT_KEY_NAME with the exact name from step 1
 
 workflows:
   milestone-life-ios:
     name: Milestone Life iOS
     max_build_duration: 60
     instance_type: mac_mini_m2
-    integrations:
-      app_store_connect: codemagic
     environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.dgator86.milestonelife
       vars:
         CAPACITOR_SERVER_URL: https://milestone-red.vercel.app
         BUNDLE_ID: com.dgator86.milestonelife
         XCODE_WORKSPACE: App.xcworkspace
         XCODE_SCHEME: App
+        # Set in Codemagic UI when enabling TestFlight auto-upload:
+        # APP_STORE_APPLE_ID: "1234567890"
       node: 20
       xcode: latest
       cocoapods: default
+    # Uncomment after adding Apple Developer Portal key in Codemagic UI:
+    # integrations:
+    #   app_store_connect: YOUR_APP_STORE_CONNECT_KEY_NAME
     triggering:
       events:
         - push
@@ -45,6 +56,8 @@ workflows:
         script: |
           cd mobile/ios/App
           pod install
+      - name: Set up code signing
+        script: xcode-project use-profiles --project mobile/ios/App/App.xcodeproj
       - name: Set iOS build number
         script: |
           cd mobile/ios/App
@@ -57,8 +70,16 @@ workflows:
             --scheme "$XCODE_SCHEME"
     artifacts:
       - mobile/ios/App/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
     publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
-        submit_to_app_store: false
+      email:
+        recipients:
+          - djvogeli@gmail.com
+        notify:
+          success: true
+          failure: true
+      # Uncomment after integrations block is configured with your real key name:
+      # app_store_connect:
+      #   auth: integration
+      #   submit_to_testflight: true
+      #   submit_to_app_store: false
