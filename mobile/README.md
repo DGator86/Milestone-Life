@@ -45,6 +45,20 @@ Sign up and sign in with email/password on device. Confirm dashboard and goals w
 
 ## Store build
 
+### Android (Windows / Mac / Linux)
+
+See **[docs/ANDROID-PLAY-STORE.md](../docs/ANDROID-PLAY-STORE.md)** for the full Google Play walkthrough.
+
+```powershell
+cd mobile
+npm install
+$env:CAPACITOR_SERVER_URL="https://milestone-red.vercel.app"
+npx cap sync android
+npx cap open android
+```
+
+Package: `com.dgator86.milestonelife` · Production URL: https://milestone-red.vercel.app
+
 ### iOS
 
 1. Xcode → Signing & Capabilities → your team
